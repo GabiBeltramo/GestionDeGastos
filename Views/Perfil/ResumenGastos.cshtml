@@ -1,0 +1,59 @@
+﻿@model Consumo
+@{
+    ViewData["Title"] = "ResumenGastos";
+}
+<body>
+    <div id="fondo" class="align-items-center">
+        <div id="titulo2" class="container-lg col-4 align-items-center">
+            <label id="CrearEtiqueta">Acá tenés un resumen de tus gastos:</label>
+            <p id="textoLight3">Puede ser que al tener graficados tus desmadres económicos, reflexiones al respecto</p>
+            <input id="ID" value="Mostrar Grafico" type="button" class="btn btn-outline-light"/>
+            <div> <canvas id="myChart" style="max-width:400px; max-height:400px;"></canvas></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+
+<script type="text/javascript">
+    $(function(){
+        $("#ID").click(function(){
+            $.ajax({
+                type: "POST",
+                url: "Perfil/ResumenGastos",
+                data: "",
+                contextType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccessResult,
+                error: OnError
+            });
+
+            function OnSuccessResult (data){
+                var _data=data;
+                var _chartLabels=_data[0];
+                var _chartData=_data[1]
+
+                var barColor = ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],]
+
+                new Chart("myChart", 
+                {
+                    type:"pie",
+                    data:{
+                        labels:_chartLabels,
+                        datasets:[{
+                            backgroundColor: barColor,
+                            data: _chartData
+                        }]
+                    }
+                }
+
+            }
+
+            function OnError(err){
+
+            }
+        });
+    });
+</script>
+
+
